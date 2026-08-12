@@ -48,6 +48,39 @@
           <p class="small">{{ t("settings.globalRules") }}</p>
           <rules v-model:rules="settings.rules" />
 
+          <h3>{{ t("settings.hiddenFolders") }}</h3>
+          <p class="small">{{ t("settings.hiddenFoldersHelp") }}</p>
+          <div class="hidden-folders-input">
+            <input
+              type="text"
+              v-model="newHiddenFolder"
+              :placeholder="t('settings.hiddenFolderPlaceholder')"
+              @keyup.enter="addHiddenFolder"
+              class="input input--block"
+            />
+            <button @click="addHiddenFolder" class="button button--flat">
+              {{ t("buttons.add") }}
+            </button>
+          </div>
+          <div
+            v-if="settings.hiddenFolders && settings.hiddenFolders.length > 0"
+            class="hidden-folders-list"
+          >
+            <div
+              v-for="(folder, index) in settings.hiddenFolders"
+              :key="index"
+              class="hidden-folder-item"
+            >
+              <span>{{ folder }}</span>
+              <button
+                @click="removeHiddenFolder(index)"
+                class="button button--flat button--red"
+              >
+                {{ t("buttons.remove") }}
+              </button>
+            </div>
+          </div>
+
           <div v-if="enableExec">
             <h3>{{ t("settings.executeOnShell") }}</h3>
             <p class="small">{{ t("settings.executeOnShellDescription") }}</p>
@@ -268,6 +301,7 @@ const commandObject = ref<{
   [key: string]: string[] | string;
 }>({});
 const shellValue = ref<string>("");
+const newHiddenFolder = ref<string>("");
 
 const $showError = inject<IToastError>("$showError")!;
 const $showSuccess = inject<IToastSuccess>("$showSuccess")!;
@@ -312,6 +346,41 @@ const applyChunkSize = () => {
     settings.value.tus.chunkSize = parseBytes(pendingChunkSize.value);
   }
   pendingChunkSize.value = null;
+};
+
+// Hidden folders management
+const addHiddenFolder = async () => {
+  if (!settings.value?.hiddenFolders) {
+    if (settings.value) {
+      settings.value.hiddenFolders = [];
+    }
+  }
+  if (
+    newHiddenFolder.value.trim() !== "" &&
+    settings.value?.hiddenFolders &&
+    !settings.value.hiddenFolders.includes(newHiddenFolder.value.trim())
+  ) {
+    settings.value.hiddenFolders.push(newHiddenFolder.value.trim());
+    newHiddenFolder.value = "";
+    try {
+      await api.update(settings.value);
+      $showSuccess(t("settings.settingsUpdated"));
+    } catch (e: any) {
+      $showError(e);
+    }
+  }
+};
+
+const removeHiddenFolder = async (index: number) => {
+  if (settings.value?.hiddenFolders) {
+    settings.value.hiddenFolders.splice(index, 1);
+    try {
+      await api.update(settings.value);
+      $showSuccess(t("settings.settingsUpdated"));
+    } catch (e: any) {
+      $showError(e);
+    }
+  }
 };
 
 // Define funcs
@@ -419,7 +488,11 @@ onMounted(async () => {
   try {
     layoutStore.loading = true;
     const original: ISettings = await api.get();
-    const newSettings: ISettings = { ...original, commands: {} };
+    const newSettings: ISettings = {
+      ...original,
+      commands: {},
+      hiddenFolders: original.hiddenFolders || [],
+    };
 
     const keys = Object.keys(original.commands) as Array<keyof SettingsCommand>;
     for (const key of keys) {
@@ -446,3 +519,46 @@ onBeforeUnmount(() => {
   }
 });
 </script>
+
+<style scoped>
+.hidden-folders-input {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.hidden-folders-input input {
+  flex: 1;
+}
+
+.hidden-folders-list {
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.hidden-folder-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.hidden-folder-item:last-child {
+  border-bottom: none;
+}
+
+.hidden-folder-item span {
+  font-family: monospace;
+  word-break: break-all;
+}
+
+.hidden-folder-item button {
+  margin-left: 10px;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+</style>

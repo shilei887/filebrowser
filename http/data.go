@@ -5,6 +5,7 @@ import (
 	"net/http"
 	gopath "path"
 	"strconv"
+	"strings"
 
 	"github.com/tomasen/realip"
 
@@ -37,6 +38,14 @@ type data struct {
 func (d *data) Check(path string) bool {
 	if d.user.HideDotfiles && rules.MatchHidden(d.rulePath(path)) {
 		return false
+	}
+
+	// Check if the path is in the global hidden folders list
+	rulePath := d.rulePath(path)
+	for _, hiddenFolder := range d.settings.HiddenFolders {
+		if rulePath == hiddenFolder || strings.HasPrefix(rulePath, hiddenFolder+"/") {
+			return false
+		}
 	}
 
 	return d.CheckRules(path)

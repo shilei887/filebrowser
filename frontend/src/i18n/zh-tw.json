@@ -1,5 +1,6 @@
 {
   "buttons": {
+    "add": "新增",
     "cancel": "取消",
     "clear": "清空",
     "close": "關閉",
@@ -44,6 +45,7 @@
     "openFile": "開啟檔案",
     "openDirect": "View raw",
     "discardChanges": "放棄變更",
+    "remove": "移除",
     "stopSearch": "Stop searching",
     "saveChanges": "Save changes",
     "editAsText": "Edit as Text",
@@ -227,6 +229,9 @@
     "globalRules": "這是全局允許與禁止規則。它們作用於所有使用者。您可以給每個使用者定義單獨的特殊規則來覆蓋全局規則。",
     "globalSettings": "全域設定",
     "hideDotfiles": "隱藏隱藏檔案",
+    "hiddenFolders": "隱藏資料夾",
+    "hiddenFoldersHelp": "新增資料夾路徑以在檔案列表中隱藏它們。該資料夾及其所有內容都將被隱藏。",
+    "hiddenFolderPlaceholder": "輸入資料夾路徑（例如：/private, /temp）",
     "insertPath": "插入路徑",
     "insertRegex": "插入正規表示式",
     "instanceName": "例項名稱",

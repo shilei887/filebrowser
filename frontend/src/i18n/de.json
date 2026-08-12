@@ -1,5 +1,6 @@
 {
   "buttons": {
+    "add": "Hinzufügen",
     "cancel": "Abbrechen",
     "clear": "Leeren",
     "close": "Schließen",
@@ -46,6 +47,7 @@
     "openFile": "Datei öffnen",
     "openDirect": "Original anzeigen",
     "discardChanges": "Verwerfen",
+    "remove": "Entfernen",
     "stopSearch": "Suche beenden",
     "saveChanges": "Änderungen speichern",
     "editAsText": "Als Text bearbeiten",
@@ -229,6 +231,9 @@
     "globalRules": "Dies ist ein globaler Satz von Erlauben- und Verbieten-Regeln. Sie gelten für alle Benutzer. Du kannst in den Einstellungen einzelner Benutzer spezifische Regeln festlegen, um diese zu überschreiben.",
     "globalSettings": "Globale Einstellungen",
     "hideDotfiles": "Versteckte Dateien ausblenden",
+    "hiddenFolders": "Versteckte Ordner",
+    "hiddenFoldersHelp": "Ordnerpfade hinzufügen, um sie aus der Dateiliste auszublenden. Der Ordner und sein gesamter Inhalt werden ausgeblendet.",
+    "hiddenFolderPlaceholder": "Ordnerpfad eingeben (z.B. /private, /temp)",
     "insertPath": "Pfad eingeben",
     "insertRegex": "Regulären Ausdruck eingeben",
     "instanceName": "Instanzname",

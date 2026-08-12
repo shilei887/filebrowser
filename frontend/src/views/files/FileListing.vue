@@ -302,6 +302,26 @@
             @action="download"
             :counter="fileStore.selectedCount"
           />
+          <action
+            v-if="headerButtons.hideFolder"
+            icon="visibility_off"
+            :label="
+              selectedVisibleDirs.length > 1
+                ? t('buttons.hideFolders', selectedVisibleDirs.length)
+                : t('buttons.hideFolder')
+            "
+            @action="hideSelectedFolder"
+          />
+          <action
+            v-if="headerButtons.showFolder"
+            icon="visibility"
+            :label="
+              selectedHiddenDirs.length > 1
+                ? t('buttons.showFolders', selectedHiddenDirs.length)
+                : t('buttons.showFolder')
+            "
+            @action="showSelectedFolder"
+          />
           <action icon="info" :label="t('buttons.info')" show="info" />
         </context-menu>
 
@@ -345,7 +365,7 @@ import { useClipboardStore } from "@/stores/clipboard";
 import { useFileStore } from "@/stores/file";
 import { useLayoutStore } from "@/stores/layout";
 
-import { users, files as api } from "@/api";
+import { users, files as api, settings } from "@/api";
 import { enableExec } from "@/utils/constants";
 import * as upload from "@/utils/upload";
 import buttons from "@/utils/buttons";
@@ -379,6 +399,7 @@ const width = ref<number>(window.innerWidth);
 const itemWeight = ref<number>(0);
 const isContextMenuVisible = ref<boolean>(false);
 const contextMenuPos = ref<{ x: number; y: number }>({ x: 0, y: 0 });
+const globalSettings = ref<ISettings | null>(null);
 
 const $showError = inject<IToastError>("$showError")!;
 
@@ -474,7 +495,39 @@ const viewIcon = computed(() => {
     : icons[authStore.user.viewMode];
 });
 
+const selectedItem = computed(() => {
+  if (fileStore.selectedCount !== 1 || !fileStore.req) return null;
+  return fileStore.req.items[fileStore.selected[0]];
+});
+
+const selectedItems = computed(() => {
+  if (!fileStore.req) return [];
+  return fileStore.selected.map((i) => fileStore.req!.items[i]).filter(Boolean);
+});
+
+const selectedDirs = computed(() => {
+  return selectedItems.value.filter((item: any) => item.isDir);
+});
+
+const selectedHiddenDirs = computed(() => {
+  return selectedDirs.value.filter((item: any) => isFolderHidden(item.path));
+});
+
+const selectedVisibleDirs = computed(() => {
+  return selectedDirs.value.filter((item: any) => !isFolderHidden(item.path));
+});
+
+const isFolderHidden = (path: string): boolean => {
+  if (!globalSettings.value?.hiddenFolders) return false;
+  return globalSettings.value.hiddenFolders.includes(path);
+};
+
 const headerButtons = computed(() => {
+  const isAdmin = authStore.user?.perm.admin;
+  const item = selectedItem.value;
+  const canHide = isAdmin && selectedVisibleDirs.value.length > 0;
+  const canShow = isAdmin && selectedHiddenDirs.value.length > 0;
+
   return {
     upload: authStore.user?.perm.create,
     download: authStore.user?.perm.download,
@@ -487,6 +540,8 @@ const headerButtons = computed(() => {
       authStore.user?.perm.download,
     move: fileStore.selectedCount > 0 && authStore.user?.perm.rename,
     copy: fileStore.selectedCount > 0 && authStore.user?.perm.create,
+    hideFolder: canHide,
+    showFolder: canShow,
   };
 });
 
@@ -517,6 +572,11 @@ onMounted(() => {
 
   // How much every listing item affects the window height
   setItemWeight();
+
+  // Load global settings for hide folder feature
+  if (authStore.user?.perm.admin) {
+    loadGlobalSettings();
+  }
 
   // Scroll to the item opened previously
   if (!revealPreviousItem()) {
@@ -1110,6 +1170,73 @@ const showContextMenu = (event: MouseEvent) => {
 
 const hideContextMenu = () => {
   isContextMenuVisible.value = false;
+};
+
+const loadGlobalSettings = async () => {
+  try {
+    globalSettings.value = await settings.get();
+  } catch (e) {
+    console.error("Failed to load settings:", e);
+  }
+};
+
+const hideSelectedFolder = async () => {
+  if (!authStore.user?.perm.admin) return;
+
+  try {
+    if (!globalSettings.value) {
+      await loadGlobalSettings();
+    }
+
+    if (globalSettings.value) {
+      if (!globalSettings.value.hiddenFolders) {
+        globalSettings.value.hiddenFolders = [];
+      }
+
+      const dirsToHide = selectedVisibleDirs.value;
+      for (const dir of dirsToHide) {
+        if (!globalSettings.value.hiddenFolders.includes(dir.path)) {
+          globalSettings.value.hiddenFolders.push(dir.path);
+        }
+      }
+
+      if (dirsToHide.length > 0) {
+        await settings.update(globalSettings.value);
+        fileStore.reload = true;
+        hideContextMenu();
+      }
+    }
+  } catch (e) {
+    $showError(e as Error);
+  }
+};
+
+const showSelectedFolder = async () => {
+  if (!authStore.user?.perm.admin) return;
+
+  try {
+    if (!globalSettings.value) {
+      await loadGlobalSettings();
+    }
+
+    if (globalSettings.value?.hiddenFolders) {
+      const dirsToShow = selectedHiddenDirs.value;
+      for (const dir of dirsToShow) {
+        const index = globalSettings.value.hiddenFolders.indexOf(dir.path);
+        if (index !== -1) {
+          globalSettings.value.hiddenFolders.splice(index, 1);
+        }
+      }
+
+      if (dirsToShow.length > 0) {
+        await settings.update(globalSettings.value);
+        fileStore.reload = true;
+        hideContextMenu();
+      }
+    }
+  } catch (e) {
+    $showError(e as Error);
+  }
 };
 
 const handleEmptyAreaClick = (e: MouseEvent) => {

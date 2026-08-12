@@ -8,6 +8,7 @@ import (
 	"github.com/spf13/afero"
 
 	"github.com/filebrowser/filebrowser/v2/files"
+	"github.com/filebrowser/filebrowser/v2/img"
 	"github.com/filebrowser/filebrowser/v2/settings"
 	"github.com/filebrowser/filebrowser/v2/storage"
 )
@@ -25,9 +26,13 @@ func NewHandler(
 	store *storage.Storage,
 	server *settings.Server,
 	assetsFs fs.FS,
+	videoPathCache *VideoPathCache,
 ) (http.Handler, error) {
 	server.Clean()
 	server.CaseInsensitiveFs = files.CaseInsensitive(afero.NewOsFs(), server.Root)
+
+	videoSvc := img.NewVideoService()
+	enableVideoThumbnails := server.EnableThumbnails && videoSvc.IsAvailable()
 
 	r := mux.NewRouter()
 	r.Use(func(next http.Handler) http.Handler {
@@ -84,7 +89,7 @@ func NewHandler(
 
 	api.PathPrefix("/raw").Handler(monkey(rawHandler, "/api/raw")).Methods("GET")
 	api.PathPrefix("/preview/{size}/{path:.*}").
-		Handler(monkey(previewHandler(imgSvc, fileCache, server.EnableThumbnails, server.ResizePreview), "/api/preview")).Methods("GET")
+		Handler(monkey(previewHandler(imgSvc, videoSvc, fileCache, videoPathCache, server.EnableThumbnails, server.ResizePreview, enableVideoThumbnails), "/api/preview")).Methods("GET")
 	api.PathPrefix("/command").Handler(monkey(commandsHandler, "/api/command")).Methods("GET")
 	api.PathPrefix("/search").Handler(monkey(searchHandler, "/api/search")).Methods("GET")
 	api.PathPrefix("/subtitle").Handler(monkey(subtitleHandler, "/api/subtitle")).Methods("GET")

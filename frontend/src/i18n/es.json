@@ -1,5 +1,6 @@
 {
   "buttons": {
+    "add": "Añadir",
     "cancel": "Cancelar",
     "clear": "Limpiar",
     "close": "Cerrar",
@@ -44,6 +45,7 @@
     "openFile": "Abrir archivo",
     "openDirect": "View raw",
     "discardChanges": "Discard",
+    "remove": "Eliminar",
     "stopSearch": "Stop searching",
     "saveChanges": "Guardar cambios",
     "editAsText": "Edit as Text",
@@ -227,6 +229,9 @@
     "globalRules": "Se trata de un conjunto global de reglas de permiso y rechazo. Se aplican a todos los usuarios. Puedes definir reglas específicas en la configuración de cada usuario para anular estas.",
     "globalSettings": "Ajustes globales",
     "hideDotfiles": "Ocultar archivos empezados por punto",
+    "hiddenFolders": "Carpetas ocultas",
+    "hiddenFoldersHelp": "Añade rutas de carpetas para ocultarlas de la lista de archivos. La carpeta y todo su contenido estarán ocultos.",
+    "hiddenFolderPlaceholder": "Introduce la ruta de la carpeta (ej: /privado, /temp)",
     "insertPath": "Introduce la ruta",
     "insertRegex": "Introducir expresión regular",
     "instanceName": "Nombre de la instancia",

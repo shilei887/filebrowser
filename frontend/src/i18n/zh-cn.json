@@ -1,5 +1,6 @@
 {
   "buttons": {
+    "add": "添加",
     "cancel": "取消",
     "clear": "清空",
     "close": "关闭",
@@ -46,6 +47,7 @@
     "openFile": "打开文件",
     "openDirect": "查看原始内容",
     "discardChanges": "放弃",
+    "remove": "移除",
     "stopSearch": "停止搜索",
     "saveChanges": "保存更改",
     "editAsText": "以文本模式编辑",
@@ -54,7 +56,11 @@
     "overrideAll": "替换目标文件夹中的所有文件",
     "skipAll": "跳过所有冲突文件",
     "renameAll": "全部重命名（创建副本）",
-    "singleDecision": "逐个处理冲突文件"
+    "singleDecision": "逐个处理冲突文件",
+    "hideFolder": "隐藏此文件夹",
+    "hideFolders": "隐藏 {count} 个文件夹",
+    "showFolder": "显示此文件夹",
+    "showFolders": "显示 {count} 个文件夹"
   },
   "download": {
     "downloadFile": "下载文件",
@@ -229,6 +235,9 @@
     "globalRules": "全局访问规则，对所有用户生效。也可单独为用户设置规则来覆盖全局规则。",
     "globalSettings": "全局设置",
     "hideDotfiles": "不显示隐藏文件",
+    "hiddenFolders": "隐藏文件夹",
+    "hiddenFoldersHelp": "添加文件夹路径以在文件列表中隐藏它们。该文件夹及其所有内容都将被隐藏。",
+    "hiddenFolderPlaceholder": "输入文件夹路径（例如：/private, /temp）",
     "insertPath": "插入路径",
     "insertRegex": "插入正则表达式",
     "instanceName": "站点名称",

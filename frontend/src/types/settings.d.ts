@@ -11,6 +11,7 @@ interface ISettings {
   tus: SettingsTus;
   shell: string[];
   commands: SettingsCommand;
+  hiddenFolders: string[];
 }
 
 interface SettingsDefaults {

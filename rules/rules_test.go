@@ -1,6 +1,9 @@
 package rules
 
-import "testing"
+import (
+	"strings"
+	"testing"
+)
 
 func TestRuleMatches(t *testing.T) {
 	t.Parallel()
@@ -89,5 +92,50 @@ func TestMatchHidden(t *testing.T) {
 		if got != want {
 			t.Errorf("MatchHidden(%s)=%v; want %v", path, got, want)
 		}
+	}
+}
+
+// TestHiddenFoldersLogic tests the logic for checking if a path should be hidden
+// based on a list of hidden folder paths. This test verifies the logic that would
+// be used in the http/data.go Check function.
+func TestHiddenFoldersLogic(t *testing.T) {
+	t.Parallel()
+
+	hiddenFolders := []string{"/private", "/temp", "/backup"}
+
+	cases := []struct {
+		name          string
+		path          string
+		shouldHide    bool
+	}{
+		{"exact match hidden folder", "/private", true},
+		{"child of hidden folder", "/private/data.txt", true},
+		{"nested child of hidden folder", "/private/subdir/file.txt", true},
+		{"another hidden folder", "/temp", true},
+		{"child of another hidden folder", "/temp/cache", true},
+		{"non-hidden folder", "/public", false},
+		{"child of non-hidden folder", "/public/data.txt", false},
+		{"root path", "/", false},
+		{"sibling path", "/private_backup", false},
+		{"prefix but not child", "/privatedata", false},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+			
+			// Simulate the logic from http/data.go Check function
+			shouldHide := false
+			for _, hiddenFolder := range hiddenFolders {
+				if tc.path == hiddenFolder || strings.HasPrefix(tc.path, hiddenFolder+"/") {
+					shouldHide = true
+					break
+				}
+			}
+			
+			if shouldHide != tc.shouldHide {
+				t.Errorf("Path %s: got shouldHide=%v, want %v", tc.path, shouldHide, tc.shouldHide)
+			}
+		})
 	}
 }

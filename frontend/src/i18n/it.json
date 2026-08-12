@@ -1,5 +1,6 @@
 {
   "buttons": {
+    "add": "Aggiungi",
     "cancel": "Annulla",
     "clear": "Cancella",
     "close": "Chiudi",
@@ -44,6 +45,7 @@
     "openFile": "Apri file",
     "openDirect": "View raw",
     "discardChanges": "Ignora",
+    "remove": "Rimuovi",
     "stopSearch": "Stop searching",
     "saveChanges": "Save changes",
     "editAsText": "Edit as Text",
@@ -227,6 +229,9 @@
     "globalRules": "Questo è un insieme globale di regole permetti/nega, che si applicano ad ogni utente. Puoi definire regole specifiche per ogni utente, per sovrascrivere queste.",
     "globalSettings": "Impostazioni globali",
     "hideDotfiles": "Nascondi dotfile",
+    "hiddenFolders": "Cartelle nascoste",
+    "hiddenFoldersHelp": "Aggiungi percorsi di cartelle per nasconderle dall'elenco dei file. La cartella e tutto il suo contenuto saranno nascosti.",
+    "hiddenFolderPlaceholder": "Inserisci il percorso della cartella (es: /privato, /temp)",
     "insertPath": "Inserisci il percorso",
     "insertRegex": "Inserisci la regex",
     "instanceName": "Nome dell'istanza",

@@ -1,5 +1,6 @@
 {
   "buttons": {
+    "add": "Add",
     "cancel": "Cancel",
     "clear": "Clear",
     "close": "Close",
@@ -46,6 +47,7 @@
     "openFile": "Open file",
     "openDirect": "View raw",
     "discardChanges": "Discard",
+    "remove": "Remove",
     "stopSearch": "Stop searching",
     "saveChanges": "Save changes",
     "editAsText": "Edit as Text",
@@ -54,7 +56,11 @@
     "overrideAll": "Replace all files in destination folder",
     "skipAll": "Skip all conflicting files",
     "renameAll": "Rename all files (create a copy)",
-    "singleDecision": "Decide for each conflicting file"
+    "singleDecision": "Decide for each conflicting file",
+    "hideFolder": "Hide this folder",
+    "hideFolders": "Hide {count} folders",
+    "showFolder": "Show this folder",
+    "showFolders": "Show {count} folders"
   },
   "download": {
     "downloadFile": "Download File",
@@ -229,6 +235,9 @@
     "globalRules": "This is a global set of allow and disallow rules. They apply to every user. You can define specific rules on each user's settings to override these ones.",
     "globalSettings": "Global Settings",
     "hideDotfiles": "Hide dotfiles",
+    "hiddenFolders": "Hidden Folders",
+    "hiddenFoldersHelp": "Add folder paths to hide them from the file listing. The folder and all its contents will be hidden.",
+    "hiddenFolderPlaceholder": "Enter folder path (e.g., /private, /temp)",
     "insertPath": "Insert the path",
     "insertRegex": "Insert regex expression",
     "instanceName": "Instance name",

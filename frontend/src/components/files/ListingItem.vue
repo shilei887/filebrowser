@@ -24,9 +24,10 @@
   >
     <div>
       <img
-        v-if="!readOnly && type === 'image' && isThumbsEnabled"
+        v-if="showThumbnail"
         v-lazy="thumbnailUrl"
         :alt="name"
+        @error="onThumbnailError"
       />
       <i v-else class="material-icons"></i>
     </div>
@@ -117,6 +118,21 @@ const thumbnailUrl = computed(() => {
 
 const isThumbsEnabled = computed(() => {
   return enableThumbs;
+});
+
+const hideThumbnail = ref(false);
+
+const onThumbnailError = () => {
+  hideThumbnail.value = true;
+};
+
+const showThumbnail = computed(() => {
+  return (
+    !hideThumbnail.value &&
+    !props.readOnly &&
+    (props.type === "image" || props.type === "video") &&
+    isThumbsEnabled.value
+  );
 });
 
 const humanSize = () => {

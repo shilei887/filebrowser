@@ -1,5 +1,6 @@
 {
   "buttons": {
+    "add": "Ajouter",
     "cancel": "Annuler",
     "clear": "Effacer",
     "close": "Fermer",
@@ -46,6 +47,7 @@
     "openFile": "Ouvrir le fichier",
     "openDirect": "Affichage brut",
     "discardChanges": "Annuler",
+    "remove": "Supprimer",
     "stopSearch": "Arrêter recherche",
     "saveChanges": "Enregistrer changements",
     "editAsText": "Editer comme Texte",
@@ -229,6 +231,9 @@
     "globalRules": "Il s'agit d'un ensemble global de règles d'autorisation et d'interdiction. Elles s'appliquent à tous les utilisateur'ices. Vous pouvez définir des règles spécifiques sur les paramètres de chaque utilisateur'ice pour remplacer celles-ci.",
     "globalSettings": "Paramètres globaux",
     "hideDotfiles": "Cacher les fichiers de configuration commançant par un point",
+    "hiddenFolders": "Dossiers masqués",
+    "hiddenFoldersHelp": "Ajoutez des chemins de dossiers pour les masquer de la liste des fichiers. Le dossier et tout son contenu seront masqués.",
+    "hiddenFolderPlaceholder": "Entrez le chemin du dossier (ex: /privé, /temp)",
     "insertPath": "Insérer le chemin",
     "insertRegex": "Insérer une expression régulière",
     "instanceName": "Nom de l'instance",

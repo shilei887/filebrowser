@@ -1,5 +1,6 @@
 {
   "buttons": {
+    "add": "追加",
     "cancel": "キャンセル",
     "clear": "クリアー",
     "close": "閉じる",
@@ -44,6 +45,7 @@
     "openFile": "ファイルを開く",
     "openDirect": "View raw",
     "discardChanges": "Discard",
+    "remove": "削除",
     "stopSearch": "Stop searching",
     "saveChanges": "Save changes",
     "editAsText": "Edit as Text",
@@ -227,6 +229,9 @@
     "globalRules": "これはグローバルな許可と不許可のルールセットです。これはすべてのユーザーに適用されます。ユーザーごとに特定のルールを設定することで、これらのルールを上書きすることができます。",
     "globalSettings": "グローバル設定",
     "hideDotfiles": "ドットで始まるファイルを表示しない",
+    "hiddenFolders": "非表示フォルダー",
+    "hiddenFoldersHelp": "ファイルリストから非表示にするフォルダーパスを追加します。フォルダーとそのすべての内容が非表示になります。",
+    "hiddenFolderPlaceholder": "フォルダーパスを入力（例：/private, /temp）",
     "insertPath": "パスを入力してください",
     "insertRegex": "正規表現を入力してください",
     "instanceName": "インスタンス名",

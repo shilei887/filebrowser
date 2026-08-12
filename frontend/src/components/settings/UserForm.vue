@@ -55,6 +55,11 @@
       {{ t("settings.lockPassword") }}
     </p>
 
+    <p v-if="!isDefault">
+      <input type="checkbox" v-model="user.hideDotfiles" />
+      {{ t("settings.hideDotfiles") }}
+    </p>
+
     <permissions v-model:perm="user.perm" />
     <commands v-if="enableExec" v-model:commands="user.commands" />
 
