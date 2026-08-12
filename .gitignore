@@ -37,3 +37,6 @@ build/
 
 default.nix
 Dockerfile.dev
+filebrowser.db
+filebrowser
+filebrowser-linux
