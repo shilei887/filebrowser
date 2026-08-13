@@ -21,15 +21,24 @@ func NewVideoPathCache(cacheRoot, fsRoot string) *VideoPathCache {
 
 func (v *VideoPathCache) targetPath(videoPath string, previewSize PreviewSize) string {
 	relPath := strings.TrimPrefix(videoPath, v.fsRoot)
-	relDir := filepath.Dir(relPath)
+	relPath = strings.TrimLeft(relPath, "/\\")
+
+	var relDir string
+	if idx := filepath.Dir(relPath); idx != "." && idx != "/" {
+		relDir = idx
+	}
+
 	baseName := strings.TrimSuffix(filepath.Base(relPath), filepath.Ext(relPath))
-	
+
 	sizeSuffix := "thumb"
 	if previewSize == PreviewSizeBig {
 		sizeSuffix = "big"
 	}
-	
-	cacheDir := filepath.Join(v.cacheRoot, relDir)
+
+	cacheDir := v.cacheRoot
+	if relDir != "" {
+		cacheDir = filepath.Join(v.cacheRoot, relDir)
+	}
 	return filepath.Join(cacheDir, baseName+"-"+sizeSuffix+".jpg")
 }
 
