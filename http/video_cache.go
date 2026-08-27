@@ -20,7 +20,17 @@ func NewVideoPathCache(cacheRoot, fsRoot string) *VideoPathCache {
 }
 
 func (v *VideoPathCache) targetPath(videoPath string, previewSize PreviewSize) string {
-	relPath := strings.TrimPrefix(videoPath, v.fsRoot)
+	var relPath string
+	if v.fsRoot != "" {
+		var err error
+		relPath, err = filepath.Rel(v.fsRoot, videoPath)
+		if err != nil {
+			// Fallback to TrimPrefix if Rel fails
+			relPath = strings.TrimPrefix(videoPath, v.fsRoot)
+		}
+	} else {
+		relPath = videoPath
+	}
 	relPath = strings.TrimLeft(relPath, "/\\")
 
 	var relDir string
